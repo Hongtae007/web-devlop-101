@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1rem;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            margin-bottom: 0.25rem;
+        }
+
+        .checkbox-group,
+        .gender-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 480px) {
+            .input-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .buttons {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div onclick="divClick()">Hello world</div>
+
+        <div class="input-row">
+            <div class="input-group">
+                <label for="firstname">ชื่อจริง</label>
+                <input class="input" type="text" id="firstname" onkeypress="changeFirstname()" name="firstname"
+                    value="สมชาย">
+            </div>
+            <div class="input-group">
+                <label for="lasrname">นามสกุล</label>
+                <input class="input" type="text" id="lastname" name="lastname" value="คนดี">
+            </div>
+        </div>
+
+        <div>กิจกรรมที่ชอบ <span style="display:none;">test</span></div>
+        <div id="content"></div>
+        <div class="checkbox-group">
+            <label><input class="interest" type="checkbox" name="interests" value="หนังสือ"> หนังสือ</label>
+            <label><input class="interest" type="checkbox" name="interests" value="เกม"> เกม</label>
+            <label><input class="interest" type="checkbox" name="interests" value="กีฬา"> กีฬา</label>
+        </div>
+        <button type="button" onclick="submitInterest()">สิ่งที่สนใจ</button>
+
+        <section class="gender-group">
+            <p>Gender:</p>
+            <label><input type="radio" name="gender" id="male" value="ชาย" onchange="changeGender()"> ชาย</label>
+            <label><input type="radio" name="gender" id="female" value="หญิง" onchange="changeGender()"> หญิง</label>
+            <label><input type="radio" name="gender" id="other" value="อื่นๆ" onchange="changeGender()"> อื่นๆ</label>
+        </section>
+
+        <div class="buttons">
+            <button type="button" onclick="userClick()">คลิกที่นี้</button>
+            <p id="myP" onmousedown="mouseDown()" onmouseup="mouseUp()" onmouseover="mouseOver()">
+                ข้อความใดๆ
+            </p>
+            <button type="button" onclick="userClick()">คลิกที่นี้</button>
+        </div>
+        <div class="buttons">
+            <button id="testbutton">ปุ่มที่ 1</button>
+            <button onclick="clickButton()">ปุ่มที่ 2</button>
+        </div>
+    </div>
+
+    <script>
+        function submitInterest() {
+            //ดึง checkbox ทั้งหมดที่ถูกเลือก (checked) ที่มี name="interests".
+            let interestInputs = document.querySelectorAll('input[name=interests]:checked')
+            //แสดงผลใน <div> ที่มี id="content"
+            let contentDiv = document.getElementById('content')
+            //สร้าง HTML <ul> เพื่อแสดงค่าที่ผู้ใช้เลือกไว้
+            let htmlData = '<ul>' //เปิดul
+            // เอาค่า value ออกมาเฉพาะตัวที่เลือก
+            for (let i = 0; i < interestInputs.length; i++) {
+                if (interestInputs[i].value) {
+                    console.log(interestInputs[i].value)
+                    htmlData += `<li>${interestInputs[i].value}</li>`
+                }
+            }
+            htmlData += '</ul>' //ปิดul
+            contentDiv.innerHTML = htmlData
+        }
+
+
+        document.getElementById('testbutton').addEventListener('click', function () {
+            console.log('คลิกปุ่มที่ 1')
+        })
+        function clickButton() {
+            console.log('คลิกปุ่มที่ 2')
+        }
+
+        function changeFirstname() {
+            const firstNameInput = document.querySelector('input[name=firstname]')
+            console.log('change firstname', firstNameInput.value)
+        }
+
+        function userClick() {
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+
+            const interests = Array.from(document.querySelectorAll('input[name=interests]:checked'))
+                .map(el => el.value);
+
+            const gender = document.querySelector('input[name=gender]:checked')?.value || 'ไม่ระบุ';
+
+            console.log(`ชื่อ: ${firstname} ${lastname}`);
+            console.log(`กิจกรรมที่ชอบ: ${interests.join(', ')}`);
+            console.log(`เพศ: ${gender}`);
+        }
+
+        function mouseDown() {
+            console.log('ข้อความถูก mouseDown')
+        }
+
+        function mouseUp() {
+            console.log('ข้อความถูก mouseUp')
+        }
+
+        function mouseOver() {
+            console.log('เมาส์กำลังอยู่บนข้อความ')
+        }
+
+        function divClick() {
+            console.log('div clicked')
+        }
+        function changeGender() {
+            let genderAll = document.querySelectorAll('input[name=gender]')
+            genderAll.forEach(input => console.log('input value', input.value));
+
+            //const genderSelect = document.querySelector('input[name=gender]:checked')
+            let genderSelect = document.querySelector('input[name=gender]:checked')
+            console.log('selected gender', genderSelect.value)
+            console.log('ChangeGender clicked')
+        }
+
+
+        let firstnameSelect = document.querySelector('input[name=firstname]')
+        console.log('firstnameSelect value', firstnameSelect.value)
+
+
+        let interestsSelect = document.querySelectorAll('input[name=interests]')
+        for (let i = 0; i < interestsSelect.length; i++) {
+            console.log('input value', interestsSelect[i].value)
+        }
+
+        let inputsDom = document.getElementsByClassName('input')
+
+        // สำหรับแสดง DOM html ออกมา (เป็น Array เนื่องจากมีหลายอัน)
+        console.log('inputsDom', inputsDom)
+
+        // สำหรับดึงค่า value ใน checkbox ออกมาทั้งหมด
+        for (let i = 0; i < inputsDom.length; i++) {
+            console.log(inputsDom[i].value)
+        }
+
+
+
+
+        let firstname = document.getElementById('firstname')
+
+        console.log('firstname dom', firstname)
+        console.log('firstname dom', firstname.type)
+        console.log('firstname dom', firstname.id)
+        console.log('firstname dom', firstname.name)
+        console.log('firstname dom', firstname.value)
+    </script>
+
+</body>
+
+</html>
