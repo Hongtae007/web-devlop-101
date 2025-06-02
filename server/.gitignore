@@ -1,0 +1,15 @@
+# ไฟล์ชั่วคราวของระบบ
+.DS_Store
+Thumbs.db
+
+# ไฟล์ที่เกี่ยวกับ environment (ไม่ควรแชร์)
+.env
+
+# node_modules (ไลบรารีที่ติดตั้งด้วย npm)
+node_modules/
+
+# log files
+*.log
+
+# บันทึกการ lock dependencies
+package-lock.json
